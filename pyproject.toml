@@ -1,0 +1,44 @@
+[project]
+name = "amia-workshop-clif-meets-rl"
+version = "0.1.0"
+description = "AMIA TRI08 — CLIF Meets RL Workshop: notebooks for cohort identification, wide-dataset construction, and a Double DQN training demo on CLIF-formatted ICU data."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Kaveri Chhikara", email = "kaveri.chhikara@gmail.com" },
+]
+
+# Versions aligned with the CLIF-RL ats-submission branch (uv.lock) where shared.
+# clifpy is pinned newer because the workshop notebooks use ClifOrchestrator features
+# that were added after CLIF-RL's pin of 0.2.2.
+dependencies = [
+    "clifpy>=0.3.8",
+    "duckdb>=1.4.1",
+    "pandas>=2.3.3",
+    "numpy>=2.0.2",
+    "pyarrow>=21.0.0",
+    "matplotlib>=3.9.4",
+    "torch>=2.8.0",
+    "tableone>=0.9.0",
+    "plotly>=5.24.0",
+    "jupyter>=1.0.0",
+    "ipykernel>=6.30.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "marimo>=0.17.2",
+    "nbstripout>=0.7.1",
+    "pre-commit>=3.5.0",
+    "nbformat>=5.9.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# This project ships no installable Python package — it's a notebook bundle.
+# Tell setuptools so it doesn't try to auto-discover one.
+packages = []

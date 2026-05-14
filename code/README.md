@@ -1,46 +1,31 @@
- ## Code directory
+# code/
 
-Update this README with the specific project workflow instructions.
-This directory contains scripts for the project workflow. The general workflow consists of three main steps: cohort identification, quality control, and analysis. Scripts can be implemented in R or Python, depending on project requirements. Please note that this workflow is just a suggestion, and you may change the structure to suit your project needs.
+Production workshop notebooks (Colab-ready). Run them top-to-bottom.
 
-### General Workflow
+| Notebook | What it builds |
+|---|---|
+| [`01_clif_rl_cohort_wide.ipynb`](01_clif_rl_cohort_wide.ipynb) | Builds the CLIF-RL ventilation cohort end-to-end: STROBE waterfall, respiratory-support waterfall, wide dataset, hourly state grid (zero NaN after imputation), baseline SOFA, Charlson CCI, Table 1, cohort-characterization figures, sample patient trajectory. Outputs `hourly_df` + `static_df`. |
+| [`02_clif_rl_training.ipynb`](02_clif_rl_training.ipynb) | RL training setup walkthrough — action encoding, terminal reward, dueling Q-net, Double DQN trainer, concordance evaluation — none executed on demo data. Then renders the ATS submission's three-site external-validation forest plot. |
+| [`03_icu_readmission_demo.ipynb`](03_icu_readmission_demo.ipynb) | Bonus notebook: ICU-readmission cohort on the demo data, with Table 1 by readmission status, a patient-journey Sankey, and an inpatient-mortality comparison. Adapted from the [CLIF ICU Readmission project](https://github.com/Common-Longitudinal-ICU-data-Format/CLIF_icu_readmission). |
 
-1. Run the cohort_identification script
-   This script should:
-   - Apply inclusion and exclusion criteria
-   - Select required fields from each table
-   - Filter tables to include only required observations
+## How they pick a data source
 
-   Expected outputs:
-   - cohort_ids: a list of unique identifiers for the study cohort
-   - cohort_data: the filtered study cohort data
-   - cohort_summary: a summary table describing the study cohort
+Both notebooks call a small loader (`resolve_data_dir`) that:
 
-   Examples of cohort identification scripts:
-   - [`code/templates/Python/01_cohort_identification_template.py`](templates/Python/01_cohort_identification_template.py)
-   - [`code/templates/R/01_cohort_identification_template.R`](templates/R/01_cohort_identification_template.R)
+1. Reads `config/config.json` (one level up) if present and `use_demo` is not `true`,
+   and uses its `tables_path`.
+2. Otherwise falls back to the CLIF demo dataset bundled inside `clifpy`.
 
-2. Run the quality_control script
-   This script should:
-   - Perform project-specific quality control checks on the filtered cohort data
-   - Handle outliers using predefined thresholds as given in `outlier-thresholds` directory. 
-   - Clean and preprocess the data for analysis
+So the same notebooks run as-is on Google Colab (no `config.json` → demo data)
+and as-is after `git clone` with a `config/config.json` pointing at your CLIF
+parquet directory.
 
-   Script: [`code/templates/R/02_project_quality_checks_template.R`](templates/R/02_project_quality_checks_template.R) & [`code/templates/R/03_outlier_handling_template.R`](templates/R/03_outlier_handling_template.R) 
+## Dev versions
 
-   Input: cohort_data 
+The marimo dev versions live in [`../dev/`](../dev/) and stay in sync with these
+.ipynbs.
 
-   Output: cleaned_cohort_data 
+## Outputs
 
-3. Run the analysis script(s)
-   This script (or set of scripts) should contain the main analysis code for the project.
-   It may be broken down into multiple scripts if necessary.
-   
-   Script: [`code/templates/R/04_project_analysis_template.R`](templates/R/04_project_analysis_template.R) 
-
-   Input: cleaned_cohort_data 
-
-   Output: [List of expected result files, e.g., statistical_results, figures, tables saved in the [`output/final`](../output/README.md) directory] 
-
-
-
+Notebooks render results inline. `nbstripout` (installed at the repo root)
+strips cell outputs on commit, so the .ipynb files stay clean in git.

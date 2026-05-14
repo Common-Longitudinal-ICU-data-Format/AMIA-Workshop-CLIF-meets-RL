@@ -1,32 +1,44 @@
-# R specific gitignores
-.Rprofile
-.Rhistory
-.Rprofile
-.Ruserdata
+# ---------- macOS ----------
 .DS_Store
-*.Rproj
-.Rproj.user
 
-## ignore the renv initialization file
-initialize_renv.R
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.Python
+.venv/
+venv/
+env/
+.python-version
 
-## ignore filtered CLIF tables stored as Rdata
-*.RData
+# ---------- Jupyter ----------
+.ipynb_checkpoints/
 
-#ignore source CLIF_ files 
-CLIF_*.parquet
-CLIF_*.csv
-CLIF_*.fst
+# ---------- Outputs (per CLIF-org convention) ----------
+output/intermediate/*
+output/final/*
+!output/intermediate/.gitkeep
+!output/final/.gitkeep
+!output/README.md
 
-#ignore the identifier app
-CLIF_cohort_identifier*
+# clifpy validate_all() writes DQA artifacts to the cwd; ignore those
+validation_errors_*.csv
+missing_data_stats_*.csv
+summary_statistics_*.csv
+skewness_analysis_*.csv
 
-# ignore file used to initialize renv when creating the template
-initialize_renv.R
+# Notebook-cwd-relative output dirs auto-created by clifpy
+code/output/
+dev/output/
+docs/
 
-# ignore filtered CLIF tables stored as Rdata
-*.RData
-
-# ignore pdf reports and rendered html
+# ---------- Rendered reports ----------
 *.pdf
+!slides/*.pdf
 *.html
+*.log
+logs/
+
+# ---------- Local site config (must never leave the user's machine) ----------
+config/config.json
